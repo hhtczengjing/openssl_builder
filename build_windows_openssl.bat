@@ -1,0 +1,7 @@
+@ECHO OFF
+chcp 65001
+cls
+@SETLOCAL
+
+
+@ENDLOCAL

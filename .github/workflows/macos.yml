@@ -1,0 +1,33 @@
+name: macOS
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  macos1015:
+    runs-on: macos-latest
+
+    env:
+      OPENSSL_VERSION: 1.1.1
+      OPENSSL_PKG_NAME: openssl-1.1.1k.tar.gz
+      OPENSSL_DIR_NAME: openssl-1.1.1k
+
+    steps:
+      # 检出代码
+      - uses: actions/checkout@v4
+
+      # 下载openssl源码
+      - name: download openssl
+        run: |
+          wget https://openssl.org/source/old/${{ env.OPENSSL_VERSION }}/${{ env.OPENSSL_PKG_NAME }} -O ${{ env.OPENSSL_PKG_NAME }}
+          tar xzf ${{ env.OPENSSL_PKG_NAME }}
+
+      # 编译
+      - name: build
+        run: |
+          cp build_macos_openssl.sh ${{ env.OPENSSL_DIR_NAME }}
+          cd ${{ env.OPENSSL_DIR_NAME }}
+          chmod a+x build_macos_openssl.sh && ./build_macos_openssl.sh
