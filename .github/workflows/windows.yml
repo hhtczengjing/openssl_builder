@@ -37,7 +37,7 @@ jobs:
       # 压缩
       - name: 7zip
         run: |
-          cp -r ${{ env.OPENSSL_DIR_NAME }}/build/openssl ${{ env.PKG_NAME }}
+          cp -r ${{ env.OPENSSL_DIR_NAME }}/build ${{ env.PKG_NAME }}
           7z a ${{ env.PKG_NAME }}.7z ${{ env.PKG_NAME }}
           rm -rf ${{ env.PKG_NAME }}
 

@@ -20,3 +20,5 @@ make clean
 ./Configure shared --prefix="$(pwd)/build/openssl" no-asm
 make -j4
 make install
+
+ls -al $(pwd)/build/openssl
