@@ -24,7 +24,7 @@ jobs:
       - name: download openssl
         run: |
           Invoke-WebRequest -Uri https://openssl.org/source/old/${{ env.OPENSSL_VERSION }}/${{ env.OPENSSL_PKG_NAME }} -OutFile ${{ env.OPENSSL_PKG_NAME }}
-          tar xzf ${{ env.OPENSSL_PKG_NAME }}
+          tar zxvf ${{ env.OPENSSL_PKG_NAME }}
       
       # 编译
       - name: build
@@ -35,11 +35,11 @@ jobs:
           ./build_windows_openssl.bat
 
       # 压缩
-      - name: 7zip libs
+      - name: 7zip
         run: |
-          cp -r opencv-${{ matrix.ver.cv }}/build-${{ matrix.arch }}-${{ matrix.list.vs_ver }}-${{ matrix.crt }}/install ${{ env.PKG_NAME }}
+          cp -r ${{ env.OPENSSL_DIR_NAME }}/build/openssl ${{ env.PKG_NAME }}
           7z a ${{ env.PKG_NAME }}.7z ${{ env.PKG_NAME }}
-          rm ${{ env.PKG_NAME }} -r -fo
+          rm -rf ${{ env.PKG_NAME }}
 
       # 上传
       - name: upload

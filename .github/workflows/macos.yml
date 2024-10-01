@@ -7,7 +7,7 @@ on:
       - '*'
 
 jobs:
-  macos1015:
+  macos14.6:
     runs-on: macos-latest
 
     env:
@@ -34,7 +34,7 @@ jobs:
           chmod a+x build_macos_openssl.sh && ./build_macos_openssl.sh
 
       # 压缩
-      - name: 7zip libs
+      - name: zip
         run: |
           cp -r ${{ env.OPENSSL_DIR_NAME }}/build/openssl ${{ env.PKG_NAME }}
           tar zcvf ${{ env.PKG_NAME }}.tar.gz ${{ env.PKG_NAME }}
