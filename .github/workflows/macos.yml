@@ -24,7 +24,7 @@ jobs:
       - name: download openssl
         run: |
           wget https://openssl.org/source/old/${{ env.OPENSSL_VERSION }}/${{ env.OPENSSL_PKG_NAME }} -O ${{ env.OPENSSL_PKG_NAME }}
-          tar xzf ${{ env.OPENSSL_PKG_NAME }}
+          tar zxvf ${{ env.OPENSSL_PKG_NAME }}
 
       # 编译
       - name: build
@@ -37,12 +37,12 @@ jobs:
       - name: 7zip libs
         run: |
           cp -r ${{ env.OPENSSL_DIR_NAME }}/build/openssl ${{ env.PKG_NAME }}
-          7z a ${{ env.PKG_NAME }}.7z ${{ env.PKG_NAME }}
-          rm ${{ env.PKG_NAME }} -r -fo
+          tar zcvf ${{ env.PKG_NAME }}.tar.gz ${{ env.PKG_NAME }}
+          rm -rf ${{ env.PKG_NAME }}
 
       # 上传
       - name: upload
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PKG_NAME }}
-          path: ${{ env.PKG_NAME }}.7z
+          path: ${{ env.PKG_NAME }}..tar.gz

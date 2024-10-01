@@ -30,6 +30,7 @@ rm -rf $(pwd)/build/openssl
 mkdir -p $(pwd)/build/openssl/lib $(pwd)/build/openssl/bin
 
 #cp $(pwd)/build/openssl-arm64/include $(pwd)/build/openssl/include
+ls -al $(pwd)/build/openssl-arm64
 lipo -create $(pwd)/build/openssl-arm64/lib/libssl.a $(pwd)/build/openssl-x86_64/lib/libssl.a -output $(pwd)/build/openssl/lib/libssl.a
 lipo -create $(pwd)/build/openssl-arm64/lib/libcrypto.a $(pwd)/build/openssl-x86_64/lib/libcrypto.a -output $(pwd)/build/openssl/lib/libcrypto.a
 
