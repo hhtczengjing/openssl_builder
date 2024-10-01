@@ -14,6 +14,7 @@ jobs:
       OPENSSL_VERSION: 1.1.1
       OPENSSL_PKG_NAME: openssl-1.1.1k.tar.gz
       OPENSSL_DIR_NAME: openssl-1.1.1k
+      PKG_NAME: openssl-1.1.1k-ubuntu
 
     steps:
       # 检出代码
@@ -31,3 +32,17 @@ jobs:
           cp build_ubuntu_openssl.sh ${{ env.OPENSSL_DIR_NAME }}
           cd ${{ env.OPENSSL_DIR_NAME }}
           chmod a+x build_ubuntu_openssl.sh && ./build_ubuntu_openssl.sh
+
+      # 压缩
+      - name: 7zip libs
+        run: |
+          cp -r ${{ env.OPENSSL_DIR_NAME }}/build/openssl ${{ env.PKG_NAME }}
+          7z a ${{ env.PKG_NAME }}.7z ${{ env.PKG_NAME }}
+          rm ${{ env.PKG_NAME }} -r -fo
+
+      # 上传
+      - name: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PKG_NAME }}
+          path: ${{ env.PKG_NAME }}.7z

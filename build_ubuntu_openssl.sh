@@ -12,22 +12,11 @@ else
   echo "Other OS: $sysOS"
 fi
 
+echo "current path: $(pwd)"
+
 rm -rf build
 
 make clean
-./Configure darwin64-x86_64-cc --prefix="$(pwd)/build/openssl-x86_64" no-asm -mmacosx-version-min=10.15
+./Configure shared --prefix="$(pwd)/build/openssl" no-asm
 make -j4
 make install
-
-make clean
-./Configure darwin64-arm64-cc --prefix="$(pwd)/build/openssl-arm64" no-asm -mmacosx-version-min=10.15
-make -j4
-make install
-
-rm -rf $(pwd)/build/openssl
-mkdir -p $(pwd)/build/openssl/lib $(pwd)/build/openssl/bin
-
-lipo -create $(pwd)/build/openssl-arm64/lib/libssl.a $(pwd)/build/openssl-x86_64/lib/libssl.a -output $(pwd)/build/lib/libssl.a
-lipo -create $(pwd)/build/openssl-arm64/lib/libcrypto.a $(pwd)/build/openssl-x86_64/lib/libcrypto.a -output $(pwd)/build/lib/libcrypto.a
-
-lipo 
