@@ -32,4 +32,4 @@ mkdir -p $(pwd)/build/openssl/lib $(pwd)/build/openssl/bin
 cp -r $(pwd)/build/openssl-arm64/include $(pwd)/build/openssl/
 lipo -create $(pwd)/build/openssl-arm64/lib/libssl.a $(pwd)/build/openssl-x86_64/lib/libssl.a -output $(pwd)/build/openssl/lib/libssl.a
 lipo -create $(pwd)/build/openssl-arm64/lib/libcrypto.a $(pwd)/build/openssl-x86_64/lib/libcrypto.a -output $(pwd)/build/openssl/lib/libcrypto.a
-lipo -info $(pwd)/build/openssl-arm64/bin/openssl $(pwd)/build/openssl-x86_64/bin/openssl -output $(pwd)/build/openssl/bin/openssl
+lipo -create $(pwd)/build/openssl-arm64/bin/openssl $(pwd)/build/openssl-x86_64/bin/openssl -output $(pwd)/build/openssl/bin/openssl
