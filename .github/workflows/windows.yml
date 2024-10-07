@@ -7,14 +7,22 @@ on:
       - '*'
 
 jobs:
-  windows-vs2019:
-    runs-on: windows-2019
-
+  windows:
     env:
       OPENSSL_VERSION: 1.1.1
       OPENSSL_PKG_NAME: openssl-1.1.1k.tar.gz
       OPENSSL_DIR_NAME: openssl-1.1.1k
       PKG_NAME: openssl-1.1.1k-win
+    
+    strategy:
+      matrix:
+        platform:
+          - arch: win64
+            os: windows-2019
+            config: VC-WIN64I
+          - arch: win32
+            os: windows-2022
+            config: VC-WIN32
 
     steps:
       # 检出代码
@@ -25,14 +33,25 @@ jobs:
         run: |
           Invoke-WebRequest -Uri https://openssl.org/source/old/${{ env.OPENSSL_VERSION }}/${{ env.OPENSSL_PKG_NAME }} -OutFile ${{ env.OPENSSL_PKG_NAME }}
           tar zxvf ${{ env.OPENSSL_PKG_NAME }}
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{ matrix.platform.arch }}
+
+      - uses: ilammy/setup-nasm@v1
+        with:
+          platform: ${{ matrix.platform.arch }}
+
+      - name: prepare the build directory
+        run: mkdir _build
       
       # 编译
-      - name: build
-        shell: powershell
+      - name: config
+        working-directory: _build
         run: |
-          cp build_windows_openssl.bat ${{ env.OPENSSL_DIR_NAME }}
-          cd ${{ env.OPENSSL_DIR_NAME }}
-          ./build_windows_openssl.bat
+          perl .\Configure ${{ matrix.platform.config }} no-asm --prefix=${{ env.OPENSSL_DIR_NAME }}/build/${{ matrix.platform.arch }}
+          nmake
+          nmake install
 
       # 压缩
       - name: 7zip
